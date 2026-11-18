@@ -8,7 +8,7 @@ Install command: `/plugin install {name}@claude-plugins-official`
 Usage: python update_claude_top5.py --out claude-top5.json
 Runs daily via .github/workflows/daily.yml
 """
-import argparse, datetime, json, re, sys, urllib.request
+import argparse, datetime, json, os, re, sys, urllib.parse, urllib.request
 
 BASE = 'https://claude.com/plugins'
 UA = {'User-Agent': 'Mozilla/5.0 (claude-plugins-top5 daily updater)'}
@@ -54,6 +54,70 @@ def get(url):
         return r.read().decode('utf-8', 'replace')
 
 
+# ---- Auto video for plugins without a hand-picked one (YouTube Data API v3, key in env YT_API_KEY) ----
+# Rules (same as the manual check): the video title or description must name the plugin AND mention Claude,
+# it must be embeddable and public, longer than 90 s (no Shorts). Among those, the most viewed wins.
+# Picks are cached in videos.json so the same plugin keeps the same video and the daily quota stays tiny.
+CACHE = 'videos.json'
+
+
+def _norm(t):
+    return re.sub(r'[\s_\-]+', '', (t or '').lower())
+
+
+def _secs(iso):
+    m = re.match(r'PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?', iso or '')
+    return (int(m.group(1) or 0) * 3600 + int(m.group(2) or 0) * 60 + int(m.group(3) or 0)) if m else 0
+
+
+def _yt(path, **q):
+    q['key'] = os.environ['YT_API_KEY']
+    with urllib.request.urlopen('https://www.googleapis.com/youtube/v3/' + path + '?' + urllib.parse.urlencode(q), timeout=30) as r:
+        return json.loads(r.read().decode('utf-8'))
+
+
+def auto_video(slug, name):
+    if not os.environ.get('YT_API_KEY'):
+        return None
+    try:
+        found = _yt('search', part='snippet', type='video', maxResults=15, videoEmbeddable='true',
+                    q='Claude Code %s plugin' % name)
+        ids = [x['id']['videoId'] for x in found.get('items', []) if x.get('id', {}).get('videoId')]
+        if not ids:
+            return None
+        info = _yt('videos', part='snippet,contentDetails,statistics,status', id=','.join(ids))
+        keys = {_norm(name), _norm(slug)}
+        best = None
+        for v in info.get('items', []):
+            sn, st = v.get('snippet', {}), v.get('status', {})
+            text = _norm(sn.get('title', '') + ' ' + sn.get('description', ''))
+            if not any(k and k in text for k in keys) or 'claude' not in text:
+                continue
+            if not st.get('embeddable') or st.get('privacyStatus') != 'public':
+                continue
+            if _secs(v.get('contentDetails', {}).get('duration')) < 90:
+                continue
+            views = int(v.get('statistics', {}).get('viewCount', 0))
+            if not best or views > best[0]:
+                best = (views, v['id'], sn.get('title', ''), sn.get('channelTitle', ''))
+        if best:
+            return {'id': best[1], 'title': best[2], 'channel': best[3], 'auto': True}
+    except Exception as e:                           # never break the daily ranking because of video search
+        print('video search failed for', slug, e)
+    return None
+
+
+def video_for(slug, name, cache):
+    if slug in VIDEO:
+        return {'id': VIDEO[slug][0], 'title': VIDEO[slug][1]}
+    if slug in cache:
+        return cache[slug]                           # may be None = searched before, nothing reliable found
+    v = auto_video(slug, name)
+    if os.environ.get('YT_API_KEY'):
+        cache[slug] = v
+    return v
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--out', required=True)
@@ -68,6 +132,10 @@ def main():
     if len(slugs) < a.n:
         sys.exit('could not read plugin list (page structure may have changed)')
 
+    try:
+        cache = json.load(open(CACHE, encoding='utf-8'))
+    except Exception:
+        cache = {}
     items = []
     for s in slugs[:a.n * 2]:                       # listing order = install order; re-sort by the actual numbers
         page = get(BASE + '/' + s)
@@ -79,16 +147,19 @@ def main():
         en = (desc.group(1) if desc else '').strip()
         items.append({'slug': s, 'name': (name.group(1).strip() if name else s), 'installs': int(m.group(1).replace(',', '')),
                       'desc': KO.get(s) or [en.split('. ')[0][:90], ''], 'ko': s in KO,
-                      'video': ({'id': VIDEO[s][0], 'title': VIDEO[s][1]} if s in VIDEO else None),
+                      'video': None,
                       'url': BASE + '/' + s, 'install': '/plugin install %s@claude-plugins-official' % s})
     items.sort(key=lambda x: -x['installs'])
     items = items[:a.n]
     for i, it in enumerate(items):
         it['rank'] = i + 1
+        it['video'] = video_for(it['slug'], it['name'], cache)   # only the final Top 5 are searched
+    with open(CACHE, 'w', encoding='utf-8') as f:
+        json.dump(cache, f, ensure_ascii=False, indent=1)
     out = {'date': datetime.date.today().isoformat(), 'source': BASE, 'basis': '설치 수', 'items': items}
     with open(a.out, 'w', encoding='utf-8') as f:
         json.dump(out, f, ensure_ascii=False, indent=1)
-    print('ok', out['date'], [(x['rank'], x['slug'], x['installs'], x['ko']) for x in items])
+    print('ok', out['date'], [(x['rank'], x['slug'], x['installs'], x['ko'], (x['video'] or {}).get('id')) for x in items])
 
 
 if __name__ == '__main__':
