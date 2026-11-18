@@ -12,6 +12,10 @@
     "대시보드·랜딩 페이지를 만들어 달라고 하면 자동으로 켜져요"
    ],
    "ko": true,
+   "video": {
+    "id": "B2bNrB39L1c",
+    "title": "How to use claude code frontend-design plugin"
+   },
    "url": "https://claude.com/plugins/frontend-design",
    "install": "/plugin install frontend-design@claude-plugins-official",
    "rank": 1
@@ -25,6 +29,10 @@
     "테스트 먼저 작성(TDD), 체계적인 디버깅, 코드 리뷰까지 순서대로 진행해요"
    ],
    "ko": true,
+   "video": {
+    "id": "yEzzBxhkUw4",
+    "title": "The Claude Code Plugin Every Developer Must Learn (Superpowers)"
+   },
    "url": "https://claude.com/plugins/superpowers",
    "install": "/plugin install superpowers@claude-plugins-official",
    "rank": 2
@@ -38,6 +46,10 @@
     "확신도가 높은 문제만 골라 GitHub에 남겨서 헛경보가 적어요"
    ],
    "ko": true,
+   "video": {
+    "id": "XMeJdDFbOPg",
+    "title": "How to review pull requests using Claude Code [FULL GUIDE]"
+   },
    "url": "https://claude.com/plugins/code-review",
    "install": "/plugin install code-review@claude-plugins-official",
    "rank": 3
@@ -51,6 +63,10 @@
     "요청에 'use context7'을 붙이면 옛날 API나 지어낸 코드가 줄어요"
    ],
    "ko": true,
+   "video": {
+    "id": "CG29OwYrXW0",
+    "title": "Context7 MCP: Live Documentation in Claude Code"
+   },
    "url": "https://claude.com/plugins/context7",
    "install": "/plugin install context7@claude-plugins-official",
    "rank": 4
@@ -64,6 +80,10 @@
     "동작은 그대로 두고 구조만 다듬어요"
    ],
    "ko": true,
+   "video": {
+    "id": "puynahM0Wew",
+    "title": "NEW Claude Code Plugin: Code Simplifier"
+   },
    "url": "https://claude.com/plugins/code-simplifier",
    "install": "/plugin install code-simplifier@claude-plugins-official",
    "rank": 5

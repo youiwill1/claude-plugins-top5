@@ -40,6 +40,16 @@ KO = {
 }
 
 
+# YouTube videos per plugin (checked public + embeddable via oEmbed). Add new ones here.
+VIDEO = {
+    'frontend-design': ['B2bNrB39L1c', 'How to use claude code frontend-design plugin'],
+    'superpowers': ['yEzzBxhkUw4', 'The Claude Code Plugin Every Developer Must Learn (Superpowers)'],
+    'code-review': ['XMeJdDFbOPg', 'How to review pull requests using Claude Code [FULL GUIDE]'],
+    'context7': ['CG29OwYrXW0', 'Context7 MCP: Live Documentation in Claude Code'],
+    'code-simplifier': ['puynahM0Wew', 'NEW Claude Code Plugin: Code Simplifier'],
+}
+
+
 def get(url):
     with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=30) as r:
         return r.read().decode('utf-8', 'replace')
@@ -70,6 +80,7 @@ def main():
         en = (desc.group(1) if desc else '').strip()
         items.append({'slug': s, 'name': (name.group(1).strip() if name else s), 'installs': int(m.group(1).replace(',', '')),
                       'desc': KO.get(s) or [en.split('. ')[0][:90], ''], 'ko': s in KO,
+                      'video': ({'id': VIDEO[s][0], 'title': VIDEO[s][1]} if s in VIDEO else None),
                       'url': BASE + '/' + s, 'install': '/plugin install %s@claude-plugins-official' % s})
     items.sort(key=lambda x: -x['installs'])
     items = items[:a.n]
