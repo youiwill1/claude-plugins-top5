@@ -42,9 +42,8 @@ KO = {
 
 # YouTube videos per plugin (checked public + embeddable via oEmbed). Add new ones here.
 VIDEO = {
-    'frontend-design': ['B2bNrB39L1c', 'How to use claude code frontend-design plugin'],
+    'frontend-design': ['Lj4ChneyDVg', 'How to Build Better UI With Claude Code'],
     'superpowers': ['yEzzBxhkUw4', 'The Claude Code Plugin Every Developer Must Learn (Superpowers)'],
-    'code-review': ['XMeJdDFbOPg', 'How to review pull requests using Claude Code [FULL GUIDE]'],
     'context7': ['CG29OwYrXW0', 'Context7 MCP: Live Documentation in Claude Code'],
     'code-simplifier': ['puynahM0Wew', 'NEW Claude Code Plugin: Code Simplifier'],
 }

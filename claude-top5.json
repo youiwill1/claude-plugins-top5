@@ -13,8 +13,8 @@
    ],
    "ko": true,
    "video": {
-    "id": "B2bNrB39L1c",
-    "title": "How to use claude code frontend-design plugin"
+    "id": "Lj4ChneyDVg",
+    "title": "How to Build Better UI With Claude Code"
    },
    "url": "https://claude.com/plugins/frontend-design",
    "install": "/plugin install frontend-design@claude-plugins-official",
@@ -46,10 +46,7 @@
     "확신도가 높은 문제만 골라 GitHub에 남겨서 헛경보가 적어요"
    ],
    "ko": true,
-   "video": {
-    "id": "XMeJdDFbOPg",
-    "title": "How to review pull requests using Claude Code [FULL GUIDE]"
-   },
+   "video": null,
    "url": "https://claude.com/plugins/code-review",
    "install": "/plugin install code-review@claude-plugins-official",
    "rank": 3
