@@ -1,0 +1,72 @@
+{
+ "date": "2026-11-18",
+ "source": "https://claude.com/plugins",
+ "basis": "설치 수",
+ "items": [
+  {
+   "slug": "frontend-design",
+   "name": "Frontend Design",
+   "installs": 1134112,
+   "desc": [
+    "AI가 만든 티 나는 화면 대신, 목적과 대상에 맞는 디자인 방향부터 정하고 화면을 만들어요",
+    "대시보드·랜딩 페이지를 만들어 달라고 하면 자동으로 켜져요"
+   ],
+   "ko": true,
+   "url": "https://claude.com/plugins/frontend-design",
+   "install": "/plugin install frontend-design@claude-plugins-official",
+   "rank": 1
+  },
+  {
+   "slug": "superpowers",
+   "name": "Superpowers",
+   "installs": 1009371,
+   "desc": [
+    "바로 코딩하지 않고 먼저 질문하고 계획부터 세우게 해요",
+    "테스트 먼저 작성(TDD), 체계적인 디버깅, 코드 리뷰까지 순서대로 진행해요"
+   ],
+   "ko": true,
+   "url": "https://claude.com/plugins/superpowers",
+   "install": "/plugin install superpowers@claude-plugins-official",
+   "rank": 2
+  },
+  {
+   "slug": "code-review",
+   "name": "Code Review",
+   "installs": 438525,
+   "desc": [
+    "여러 검토 에이전트가 PR을 동시에 서로 다른 관점으로 검토해요",
+    "확신도가 높은 문제만 골라 GitHub에 남겨서 헛경보가 적어요"
+   ],
+   "ko": true,
+   "url": "https://claude.com/plugins/code-review",
+   "install": "/plugin install code-review@claude-plugins-official",
+   "rank": 3
+  },
+  {
+   "slug": "context7",
+   "name": "Context7",
+   "installs": 417801,
+   "desc": [
+    "라이브러리의 최신 버전 공식 문서와 예제를 가져와 답에 넣어요",
+    "요청에 'use context7'을 붙이면 옛날 API나 지어낸 코드가 줄어요"
+   ],
+   "ko": true,
+   "url": "https://claude.com/plugins/context7",
+   "install": "/plugin install context7@claude-plugins-official",
+   "rank": 4
+  },
+  {
+   "slug": "code-simplifier",
+   "name": "Code Simplifier",
+   "installs": 346763,
+   "desc": [
+    "최근에 고친 코드를 더 읽기 쉽고 일관되게 정리해 줘요",
+    "동작은 그대로 두고 구조만 다듬어요"
+   ],
+   "ko": true,
+   "url": "https://claude.com/plugins/code-simplifier",
+   "install": "/plugin install code-simplifier@claude-plugins-official",
+   "rank": 5
+  }
+ ]
+}
